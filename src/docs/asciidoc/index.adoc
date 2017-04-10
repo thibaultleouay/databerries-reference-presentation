@@ -1,0 +1,103 @@
+= Au royaume de la JVM, le roi Object est attaqué par le méchant GC. Que se passe-t-il ?
+Thibault Le Ouay (@thibaultleouay), Databerries
+2017-04-07
+
+:revnumber: {project-version}
+:example-caption!:
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../java]
+:deckjs_transition: fade
+:navigation:
+:menu:
+:status:
+:adoctor: http://asciidoctor.org/[Asciidoctor]
+:gradle: http://gradle.org[Gradle]
+
+== Au programme 
+
+* Les references en Java, Késako ?
+* Les references fortes !
+* java.lang.ref.Reference<T>
+* Alors il reste qui ? 
+
+
+
+== Des references en Java ? 
+
+Le java c'est simple nous n'avons jamais besoin de nous occuper la mémoire ! 
+
+=== That's a lie and you know it ===
+
+image::false.gif[400,600]
+
+
+
+== Les references fortes !
+
+[source,java]
+----
+Employee emp = new Employee(); 
+emp = null
+----
+Un objet dont la référence est protégé par la garbage collection
+
+== Le package java.lang.ref == 
+
+
+
+== java.lang.ref.Reference<T> ==
+
+image::javadoc.png[]
+
+=== SoftReference<T> === 
+
+image::softreference.png[]
+
+Un objet est protégé lors d'un GC, jusqu'à ce qu'il manque de mémoire.
+
+=== WeakReference<T> === 
+
+image::weakreference.png[]
+
+Un objet qui n'est pas protégé lors d'un GC.
+
+=== PhantomReference<T> === 
+
+image::phantomreference.png[]
+Un objet dont qui a été finalize mais dont la mémoire n'a pas encore été reclamé 
+
+=== Utilisation  ===
+[source,java]
+----
+public void someMethod(){
+    Employee emp = new Employee();
+    SoftReference<Employee> softRef = new SoftReference<>(emp):
+}
+
+public String getEmployeeName(){
+    Employee myEmployee = softRef.get();
+    if(myEmployee!=null){
+        return myEmployee.getName();
+    }
+    return "";
+}
+----
+
+ 
+==  Qui se passe-t-il dans le royaume de la JVM ? == 
+
+=== Si le roi est Strong ? === 
+
+GC ne peut pas le tuer 
+
+=== Si le roi est Soft === 
+
+Le roi est protégé jusqu'à ce que le royaume manque de ressource 
+
+=== Si le roi est Weak === 
+
+Le roi gére son royaume sans être protégé 
+
+=== Si le roi est Phantom === 
+
+GC tue le roi mais son esprit est toujours là 
