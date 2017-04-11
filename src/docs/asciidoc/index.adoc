@@ -15,10 +15,10 @@ ifndef::sourcedir[:sourcedir: ../java]
 
 == Au programme 
 
-* Les references en Java, Késako ?
+* Des references en Java ?
 * Les references fortes !
-* java.lang.ref.Reference<T>
-* Alors il reste qui ? 
+* Le package java.lang.ref.*
+* Que se passe-t-il dans le royaume de la JVM ? 
 
 
 
@@ -41,8 +41,10 @@ emp = null
 ----
 Un objet dont la référence est protégé par la garbage collection
 
-== Le package java.lang.ref == 
-
+== Le package java.lang.ref ==
+[%step]
+* Fournit des classes permettant des gérer les références sur les objets.  
+* Depuis la version 1.2
 
 
 == java.lang.ref.Reference<T> ==
@@ -53,18 +55,23 @@ image::javadoc.png[]
 
 image::softreference.png[]
 
-Un objet est protégé lors d'un GC, jusqu'à ce qu'il manque de mémoire.
+[%step]
+* Un objet est protégé lors d'un GC, jusqu'à ce qu'il manque de mémoire.
+* Exemple : cache 
 
 === WeakReference<T> === 
 
 image::weakreference.png[]
 
-Un objet qui n'est pas protégé lors d'un GC.
+[%step]
+* Un objet qui n'est pas protégé lors d'un GC.
+* Exemple : metadata d'objet 
 
 === PhantomReference<T> === 
 
 image::phantomreference.png[]
-Un objet dont qui a été finalize mais dont la mémoire n'a pas encore été reclamé 
+
+* Un objet dont qui a été finalize mais dont la mémoire n'a pas encore été reclamé 
 
 === Utilisation  ===
 [source,java]
@@ -84,20 +91,40 @@ public String getEmployeeName(){
 ----
 
  
-==  Qui se passe-t-il dans le royaume de la JVM ? == 
+==  Que se passe-t-il dans le royaume de la JVM ? == 
 
 === Si le roi est Strong ? === 
 
-GC ne peut pas le tuer 
+image::strong.gif[]
+[%step]
+- GC ne peut pas le tuer 
 
-=== Si le roi est Soft === 
+=== Si le roi est Soft ? === 
 
-Le roi est protégé jusqu'à ce que le royaume manque de ressource 
+image::soft.gif[]
+[%step]
+* Le roi est protégé jusqu'à ce que le royaume manque de ressource 
 
-=== Si le roi est Weak === 
+=== Si le roi est Weak ? === 
 
-Le roi gére son royaume sans être protégé 
+image::weak.gif[]
+[%step]
+* Le roi gére son royaume sans être protégé 
 
-=== Si le roi est Phantom === 
+=== Si le roi est Phantom ? === 
 
-GC tue le roi mais son esprit est toujours là 
+image::phantom.gif[]
+[%step]
+* GC tue le roi mais son esprit est toujours là 
+
+== Questions ? == 
+
+image::questions.gif[]
+
+== Lien ==
+
+http://docs.oracle.com/javase/8/docs/api/java/lang/ref/package-summary.html
+
+http://stackoverflow.com/questions/299659/what-is-the-difference-between-a-soft-reference-and-a-weak-reference-in-java
+
+https://github.com/thibaultleouay/databerries-reference-presentation
